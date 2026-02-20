@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiver SVG Viewer for Slack</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      color: #1d1c1d;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      max-width: 640px;
+    }
+    .logo { font-size: 3rem; margin-bottom: 0.5rem; }
+    h1 { font-size: 2.2rem; margin-bottom: 0.75rem; }
+    .subtitle { font-size: 1.15rem; color: #555; margin-bottom: 2.5rem; line-height: 1.6; }
+    .add-to-slack {
+      display: inline-block;
+      margin-bottom: 3rem;
+    }
+    .add-to-slack img {
+      height: 48px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 580px;
+      padding: 0 2rem;
+      margin-bottom: 3rem;
+    }
+    .feature {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .feature .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .feature h3 { font-size: 0.95rem; margin-bottom: 0.35rem; }
+    .feature p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+    footer {
+      margin-top: auto;
+      padding: 2rem;
+      text-align: center;
+      color: #999;
+      font-size: 0.85rem;
+    }
+    footer a { color: #7c3aed; text-decoration: none; }
+    @media (max-width: 500px) {
+      .features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="logo">🖼️</div>
+    <h1>Quiver SVG Viewer</h1>
+    <p class="subtitle">
+      Automatically preview SVG files shared in Slack. Renders crisp PNG previews
+      and lets your team edit SVGs instantly with Quiver.
+    </p>
+    <a class="add-to-slack" href="/auth/install">
+      <img alt="Add to Slack" src="https://platform.slack-edge.com/img/add_to_slack.png"
+           srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
+    </a>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>Instant Previews</h3>
+      <p>Upload an SVG and get a rendered PNG preview right in the channel.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔍</div>
+      <h3>Zoom to Full Res</h3>
+      <p>Click Zoom to see a 2048px high-resolution render in a modal.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">✏️</div>
+      <h3>Edit with Quiver</h3>
+      <p>One-click to open and edit the SVG directly in Quiver's editor.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔒</div>
+      <h3>Secure</h3>
+      <p>All requests verified with Slack's signing secret. Your files stay private.</p>
+    </div>
+  </div>
+
+  <footer>
+    Built by <a href="https://quiver.app">Quiver</a>
+  </footer>
+</body>
+</html>

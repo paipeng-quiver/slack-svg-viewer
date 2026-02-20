@@ -1,0 +1,20 @@
+{
+  "name": "quiver-svg-viewer",
+  "version": "1.0.0",
+  "description": "Public multi-tenant Slack app that renders SVG previews and integrates with Quiver",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@slack/web-api": "^7.8.0",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
