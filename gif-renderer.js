@@ -27,7 +27,7 @@ function isAnimatedSvg(svgBuffer) {
  * @param {number} fps - Frames per second (default 10)
  * @returns {Promise<Buffer>} GIF buffer
  */
-async function svgToGif(svgBuffer, width = 1024, durationMs = 3000, fps = 10) {
+async function svgToGif(svgBuffer, width = 1024, durationMs = 5000, fps = 10) {
   const totalFrames = Math.round((durationMs / 1000) * fps);
   const frameDelay = Math.round(1000 / fps);
 
