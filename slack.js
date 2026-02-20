@@ -1,5 +1,6 @@
 const { WebClient } = require("@slack/web-api");
 const { Resvg } = require("@resvg/resvg-js");
+const { isAnimatedSvg, svgToGif } = require("./gif-renderer");
 const { getTeam } = require("./db");
 
 // Cache WebClient instances per team
@@ -60,16 +61,28 @@ async function handleFileShared(event, teamId) {
     console.log(`Processing SVG: ${file.name} (${file.id}) for team ${teamId}`);
 
     const svgBuffer = await fetchSvgFile(file.url_private, team.bot_token);
-    const pngBuffer = svgToPng(svgBuffer);
+    const animated = isAnimatedSvg(svgBuffer);
+
+    let previewBuffer, previewFilename, previewLabel;
+    if (animated) {
+      console.log(`Detected animated SVG: ${file.name}`);
+      previewBuffer = await svgToGif(svgBuffer, 1024);
+      previewFilename = file.name.replace(/\.svg$/i, "_preview.gif");
+      previewLabel = "SVG Preview (animated)";
+    } else {
+      previewBuffer = svgToPng(svgBuffer);
+      previewFilename = file.name.replace(/\.svg$/i, "_preview.png");
+      previewLabel = "SVG Preview";
+    }
 
     const quiverUrl = `https://quiver.app/edit?import=${encodeURIComponent(file.url_private)}`;
     const channel = event.channel_id;
 
-    // Upload PNG preview
+    // Upload preview
     await client.files.uploadV2({
       channel_id: channel,
-      file: pngBuffer,
-      filename: file.name.replace(/\.svg$/i, "_preview.png"),
+      file: previewBuffer,
+      filename: previewFilename,
       title: `Preview: ${file.name}`,
       thread_ts: event.event_ts || undefined,
     });
@@ -78,11 +91,11 @@ async function handleFileShared(event, teamId) {
     await client.chat.postMessage({
       channel,
       thread_ts: event.event_ts || undefined,
-      text: `SVG Preview: ${file.name}`,
+      text: `${previewLabel}: ${file.name}`,
       blocks: [
         {
           type: "section",
-          text: { type: "mrkdwn", text: `🖼️ *SVG Preview:* \`${file.name}\`` },
+          text: { type: "mrkdwn", text: `🖼️ *${previewLabel}:* \`${file.name}\`` },
         },
         {
           type: "actions",
@@ -134,13 +147,22 @@ async function handleZoom(payload, fileId) {
     const file = result.file;
 
     const svgBuffer = await fetchSvgFile(file.url_private, team.bot_token);
-    const pngBuffer = svgToPng(svgBuffer, 2048);
+    const animated = isAnimatedSvg(svgBuffer);
+
+    let zoomBuffer, zoomFilename;
+    if (animated) {
+      zoomBuffer = await svgToGif(svgBuffer, 2048);
+      zoomFilename = file.name.replace(/\.svg$/i, "_zoom.gif");
+    } else {
+      zoomBuffer = svgToPng(svgBuffer, 2048);
+      zoomFilename = file.name.replace(/\.svg$/i, "_zoom.png");
+    }
 
     // Upload zoomed version to user's DM for URL
     const upload = await client.files.uploadV2({
       channel_id: payload.user.id,
-      file: pngBuffer,
-      filename: file.name.replace(/\.svg$/i, "_zoom.png"),
+      file: zoomBuffer,
+      filename: zoomFilename,
       title: `Zoom: ${file.name}`,
     });
 
