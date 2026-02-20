@@ -75,7 +75,7 @@ async function svgToGif(svgBuffer, width = 1024, durationMs = 3000, fps = 10) {
     }
 
     // Encode GIF
-    const firstPng = PNG.sync.read(frames[0]);
+    const firstPng = PNG.sync.read(Buffer.from(frames[0]));
     const encoder = new GIFEncoder(firstPng.width, firstPng.height, "neuquant");
     encoder.setDelay(frameDelay);
     encoder.setRepeat(0); // loop forever
@@ -83,7 +83,7 @@ async function svgToGif(svgBuffer, width = 1024, durationMs = 3000, fps = 10) {
     encoder.start();
 
     for (const frame of frames) {
-      const png = PNG.sync.read(frame);
+      const png = PNG.sync.read(Buffer.from(frame));
       encoder.addFrame(png.data);
     }
 
